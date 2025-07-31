@@ -6,9 +6,13 @@ const alertValidaciones = document.getElementById("alertValidaciones");
 const alertValidacionesTexto = document.getElementById("alertValidacionesTexto");
 const tablaListaCompras = document.getElementById("tablaListaCompras");
 const cuerpoTabla = tablaListaCompras.getElementsByTagName("tbody")[0];
-//const productosTotal
-//const precioTotal
-let contador = 0; // c ontador inicia en cero
+const productosTotal = document.getElementById("productosTotal");
+const precioTotal = document.getElementById("precioTotal");
+const contadorProductos = document.getElementById("contadorProductos");
+
+let contador = 0; // contador inicia en cero
+let totalEnProductos = 0;
+let costoTotal = 0;
 
 
 function validarCantidad(){
@@ -54,21 +58,24 @@ btnAgregar.addEventListener("click", function(event){
     }
 
     if(isValid){
-        contador++;
-        let precio = getPrecio();
-        let row = `<tr>
+        contador++; // el ++ es para cada que unproducto se agregue en la columna # se sume 1
+        let precio = getPrecio(); // establece para precio el valor random de la función precio de la linea 34
+        let row = `<tr> 
                         <td>${contador}</td>
                         <td>${txtName.value}</td>
                         <td>${txtNumber.value}</td>
                         <td>${precio}</td>
-                    </tr>`
+                    </tr>`; // se crea la estructura de la tabla linea por linea de como ingresara los datos
 
-        cuerpoTabla.insertAdjacentHTML("beforeend", row);
-        txtName.value="";
-        txtNumber.value="";
-        txtName.focus();
-
-
+        cuerpoTabla.insertAdjacentHTML("beforeend", row); // inserta la columna creada el linea 63 al final de la lista
+        contadorProductos.innerText=contador;// agrega al campo contador de productos el valor que esta en contador linea 61
+        totalEnProductos += Number(txtNumber.value); // guarda en totalEnProductos el valor númerico de txtNumber
+        productosTotal.innerText = totalEnProductos; // guarda en productosTotal el valor de totalEnProductos linea72
+        costoTotal += precio * Number(txtNumber.value); // Establece que costoTotal es el acumulado de precio*numerodeproductos
+        precioTotal.innerText = new Intl.NumberFormat("es-MX", 
+                    { style: "currency", currency: "MXN" }).format(costoTotal);//Ingresa en precioTotal el valor de costoTotal con formato de $$
+        txtName.value="";// Limpia el valor de txtName
+        txtNumber.value=""; // Limpia el valor de txtNumber
+        txtName.focus(); // Coloca el cursor en la casilla txtName;
     }
 });
-
