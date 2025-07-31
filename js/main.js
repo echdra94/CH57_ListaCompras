@@ -4,6 +4,9 @@ const txtName = document.getElementById("Name");
 const txtNumber = document.getElementById("Number");
 const alertValidaciones = document.getElementById("alertValidaciones");
 const alertValidacionesTexto = document.getElementById("alertValidacionesTexto");
+//const tablaListaCompras
+//const productosTotal
+//const precioTotal
 
 function validarCantidad(){
     if (txtNumber.value.length==0){
@@ -21,9 +24,9 @@ function validarCantidad(){
     return true;
 }
 
-//const tablaListaCompras
-//const productosTotal
-//const precioTotal
+function getPrecio(){
+    Math.round(Math.random() * 10000) /100;
+} // get precio
 
 btnAgregar.addEventListener("click", function(event){
     event.preventDefault(); // previene el default del boton
