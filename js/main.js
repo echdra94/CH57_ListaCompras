@@ -46,7 +46,7 @@ btnAgregar.addEventListener("click", function(event){
 
     if(txtName.value.length<3){ //Validaciones para Nombre no admitido
         txtName.style.border="thin red solid"; // se pone el borde rojo cuando no admite Nombre
-        alertValidacionesTexto.innerHTML="<strong>El nombre del producto no es válido</strong>"; // Alerta
+        alertValidacionesTexto.innerHTML="<strong>El nombre del producto no es válido</strong><br>"; // Alerta
         alertValidaciones.style.display="block"; // Fondo de alerta del div
         isValid = false;
     }
@@ -97,4 +97,62 @@ btnAgregar.addEventListener("click", function(event){
         txtNumber.value=""; // Limpia el valor de txtNumber
         txtName.focus(); // Coloca el cursor en la casilla txtName;
     }
+}); // click boton
+
+window.addEventListener("load", function (event){
+    event.preventDefault();
+    if (this.localStorage.getItem("datos")!=null){
+        datos = JSON.parse(this.localStorage.getItem("datos")); // es el array ya especificado
+        datos.forEach( (dato) => {
+            let row = `<tr> 
+                        <td>${dato.contador}</td>
+                        <td>${dato.nombre}</td>
+                        <td>${dato.cantidad}</td>
+                        <td>${dato.precio}</td>
+                    </tr>`;
+            cuerpoTabla.insertAdjacentHTML("beforeend", row);
+        })
+    }
+
+    if (this.localStorage.getItem("resumen")!=null){
+        let resumen = JSON.parse(this.localStorage.getItem("resumen"));
+        costoTotal = resumen.costoTotal;
+        totalEnProductos = resumen.totalEnProductos;
+        contador = resumen.contador;
+    }
+
+    contadorProductos.innerText=contador;
+    productosTotal.innerText = totalEnProductos;
+    precioTotal.innerText = new Intl.NumberFormat("es-MX", 
+                    { style: "currency", currency: "MXN" }).format(costoTotal);
+});
+
+btnClear.addEventListener("click", function(event){
+    event.preventDefault();
+    //1.- Eliminatr local.Storage
+    localStorage.removeItem("datos");
+    localStorage.removeItem("resumen");
+    // 2. Limpiar la tabla
+    cuerpoTabla.innerHTML="";
+    //Limpiar lo campos
+    txtName.value="";// Limpia el valor de txtName
+    txtNumber.value=""; // Limpia el valor de txtNumber
+    txtName.focus(); // Coloca el cursor en la casilla txtName;
+
+    //Limpiar el borde de los campos y limpar alerts
+    alertValidacionesTexto.innerHTML="";// Limpia la alerta
+    alertValidaciones.style.display="none"; // Limpia el fondo de la alerta
+    txtName.style.border="";// limpia el borde rojo del campo name cuando hay alerta
+    txtNumber.style.border="";// limpia el borde rojo del campo Nymber cuando hay alerta
+    //Limpiar resumen
+    contador = 0;
+    totalEnProductos = 0;
+    costoTotal = 0;
+
+    contadorProductos.innerText=contador;
+    productosTotal.innerText = totalEnProductos;
+    precioTotal.innerText = new Intl.NumberFormat("es-MX", 
+                    { style: "currency", currency: "MXN" }).format(costoTotal);
+
+    datos = new Array();
 });
