@@ -14,6 +14,7 @@ let contador = 0; // contador inicia en cero
 let totalEnProductos = 0;
 let costoTotal = 0;
 
+let datos = new Array();
 
 function validarCantidad(){
     if (txtNumber.value.length==0){
@@ -67,6 +68,15 @@ btnAgregar.addEventListener("click", function(event){
                         <td>${precio}</td>
                     </tr>`; // se crea la estructura de la tabla linea por linea de como ingresara los datos
 
+        let elemento = {
+            "contador" : contador,
+            "nombre" : txtName.value,
+            "cantidad" : txtNumber.value,
+            "precio-2" : precio 
+        }
+        datos.push(elemento);
+        localStorage.setItem("datos", JSON.stringify(datos));
+
         cuerpoTabla.insertAdjacentHTML("beforeend", row); // inserta la columna creada el linea 63 al final de la lista
         contadorProductos.innerText=contador;// agrega al campo contador de productos el valor que esta en contador linea 61
         totalEnProductos += Number(txtNumber.value); // guarda en totalEnProductos el valor númerico de txtNumber
@@ -74,6 +84,15 @@ btnAgregar.addEventListener("click", function(event){
         costoTotal += precio * Number(txtNumber.value); // Establece que costoTotal es el acumulado de precio*numerodeproductos
         precioTotal.innerText = new Intl.NumberFormat("es-MX", 
                     { style: "currency", currency: "MXN" }).format(costoTotal);//Ingresa en precioTotal el valor de costoTotal con formato de $$
+
+        let resumen = {
+            "contador" : contador,
+            "totalEnProductos" : totalEnProductos,
+            "costoTotal" : costoTotal
+        };
+        
+        localStorage.setItem("resumen", JSON.stringify(resumen));
+
         txtName.value="";// Limpia el valor de txtName
         txtNumber.value=""; // Limpia el valor de txtNumber
         txtName.focus(); // Coloca el cursor en la casilla txtName;
